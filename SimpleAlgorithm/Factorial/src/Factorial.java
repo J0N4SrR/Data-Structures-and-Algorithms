@@ -7,6 +7,10 @@ public class Factorial {
         }
         str.append(num);
         str.append("! = ");
+        if(num <= 1){
+            str.append(FactorialResult(num));
+            return str.toString();
+        }
         for(int i = num; i > 0; i--){
             str.append(i);
             if(i > 1) str.append("X");
@@ -38,10 +42,8 @@ public class Factorial {
         if(num <= 1){
             return 1;
         }
-        for(int i = num; i > 0; i--){
-            fac = num * FactorialRecursive(num-1);
-        }
-        return fac;
+
+        return num * FactorialRecursive(num-1);
     }
 
 }
