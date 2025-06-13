@@ -65,6 +65,23 @@ public class Array<T>{
             }
     }
 
+    public void removeByElementAllOptmize(T element) throws Exception {
+        if(element == null) throw new NullPointerException();
+        T[] vectorTemp = (T[]) new Object[capacity];
+        int indexTemp = 0;
+        for(int i = 0; i < capacity; i++){
+            if(vector[i] != null && !vector[i].equals(element)){
+                vectorTemp[indexTemp] = vector[i];
+                indexTemp++;
+            }
+        }
+        if(indexTemp > 0){
+            vector = vectorTemp;
+        }else{
+            throw new Exception("Element not found!");
+        }
+    }
+
     @Override
     public String toString() {
 
