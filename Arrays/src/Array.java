@@ -1,9 +1,7 @@
-public class Array<T>{
+public class Array<T> implements Comparable<T>{
     private int capacity;
     private int currentSize;
     private T[] vector;
-
-
 
 
     public Array(int capacity) {
@@ -13,25 +11,49 @@ public class Array<T>{
         this.currentSize = 0;
     }
 
-    public void add(T element) throws Exception {
-        if(currentSize < capacity){
+    private boolean isEmpty(){
+        return currentSize == 0;
+    }
+
+    private boolean isFull(){
+        return currentSize == capacity;
+    }
+
+
+    public void add(T element) {
+        if(!isFull()){
         vector[currentSize] = element;
         currentSize++;
         } else {
-            throw new Exception("The array is full");
+            throw new IllegalStateException("The array is full");
         }
-
     }
 
     public void addAtPosition(int index, T element) throws Exception {
-        if(currentSize == capacity) throw new Exception("The array is full");
-        if(index >= 0 && index <= vector.length-1){
+        if(isFull()) throw new IndexOutOfBoundsException("The array is full");
+        if(index >= 0 && index < currentSize){
             for(int i = currentSize; i > index; i-- ){
                 vector[i] = vector[i-1];
-                }
+            }
             vector[index] = element;
             currentSize++;
-        } else throw new IllegalArgumentException();
+        }
+    }
+
+    public T getElement(int index){
+        if(index >= 0 && index < currentSize) return vector[index];
+        else throw new  IndexOutOfBoundsException("Index " + index + " is out of bounds for current size: " + currentSize);
+    }
+
+    public T setElement(int index, T element){
+
+        if(index < 0 || index >= currentSize) {
+           throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for current size: " + currentSize);
+
+       }
+        T oldElement = vector[index];
+        vector[index] = element;
+        return oldElement;
     }
 
 
@@ -43,9 +65,19 @@ public class Array<T>{
                 }
             }
         }
-
         return -1;
     }
+
+    public T findByValue(T element){
+        for(int i = 0; i < currentSize; i++ ){
+            if(vector[i].equals(element)){
+                return vector[i];
+            }
+        }
+        return null;
+    }
+
+
 
     public void removeByIndex(int index){
         if(!(index < 0 || index >= currentSize)){
@@ -62,6 +94,7 @@ public class Array<T>{
         for(int i = 0; i < vector.length; i++){
             if(findIndexByValue(element) != -1){
                 removeByIndex(findIndexByValue(element));}
+                currentSize--;
             }
     }
 
@@ -77,10 +110,30 @@ public class Array<T>{
         }
         if(indexTemp > 0){
             vector = vectorTemp;
+            currentSize = indexTemp;
         }else{
-            throw new Exception("Element not found!");
+            throw new Exception("Element isn't found!");
         }
     }
+    public void clearArray(){
+        vector = null;
+        currentSize = 0;
+        Runtime.getRuntime().runFinalization();
+        Runtime.getRuntime().gc();
+    }
+
+    public T[] toArray(){
+        T[] newArray = (T[]) new Object[currentSize];
+        for(int i = 0; i < currentSize; i++){
+            newArray[i] = vector[i];
+        }
+        return newArray;
+    }
+
+    public T[] sortArray(){
+
+    }
+
 
     @Override
     public String toString() {
@@ -99,5 +152,10 @@ public class Array<T>{
         sb.append("]");
 
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(T o) {
+        return 0;
     }
 }
