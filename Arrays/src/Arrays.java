@@ -1,18 +1,26 @@
-public class Array<T> implements Comparable<T>{
+import java.lang.reflect.Array;
+
+public class Arrays<T extends Comparable<T>>  {
+    private Class<T> type;
     private int capacity;
     private int currentSize;
     private T[] vector;
 
-
-    public Array(int capacity) {
+    public Arrays(Class<T> type, int capacity) {
         if(capacity < 0) throw new IllegalArgumentException();
+        this.type = type;
         this.capacity = capacity;
-        this.vector = (T[]) new Object[capacity];
+        this.vector = (T[]) Array.newInstance(type, capacity);
         this.currentSize = 0;
     }
 
     private boolean isEmpty(){
-        return currentSize == 0;
+        int counter = 0;
+        for(int i =0; i < capacity; i++){
+            if(vector[i] == null) counter++;
+        }
+
+        return currentSize == 0 && capacity == counter;
     }
 
     private boolean isFull(){
@@ -56,7 +64,60 @@ public class Array<T> implements Comparable<T>{
         return oldElement;
     }
 
+    public void removeByIndex(int index){
+        if(!(index < 0 || index >= currentSize)){
+            for(int i = index; i < currentSize; i++ ){
+                if(i+1 < currentSize){
+                    vector[i] = vector[i + 1];
+                } else vector[i] = null;
+            }
+            currentSize--;
+        }
+    }
 
+//    public void removeByElementAll(T element){
+//        for(int i = 0; i < vector.length; i++){
+//            if(findIndexByValue(element) != -1){
+//                removeByIndex(findIndexByValue(element));}
+//                currentSize--;
+//            }
+//    }
+
+    public void removeByElementAllOptmize(T element) throws Exception {
+        if(element == null) throw new NullPointerException();
+        T[] vectorTemp = (T[]) Array.newInstance(type, capacity);;
+        int indexTemp = 0;
+        for(int i = 0; i < capacity; i++){
+            if(vector[i] != null && !vector[i].equals(element)){
+                vectorTemp[indexTemp] = vector[i];
+                indexTemp++;
+            }
+        }
+        if(indexTemp > 0){
+            vector = vectorTemp;
+            currentSize = indexTemp;
+        }else{
+            throw new Exception("Element isn't found!");
+        }
+    }
+
+    public boolean clearArray(){
+        for(int i =0; i < capacity; i++){
+            vector[i] = null;
+        }
+        currentSize = 0;
+        return isEmpty();
+    }
+
+    public T[] toArray(){
+        T[] newArray = (T[]) new Object[currentSize];
+        for(int i = 0; i < currentSize; i++){
+            newArray[i] = vector[i];
+        }
+        return newArray;
+    }
+
+    //Linear Search Algorithm
     public int findIndexByValue(T element){
         for(int i = 0; i < currentSize; i++ ){
             if(vector[i] != null ){
@@ -77,64 +138,20 @@ public class Array<T> implements Comparable<T>{
         return null;
     }
 
-
-
-    public void removeByIndex(int index){
-        if(!(index < 0 || index >= currentSize)){
-            for(int i = index; i < currentSize; i++ ){
-                if(i+1 < currentSize){
-                    vector[i] = vector[i + 1];
-                } else vector[i] = null;
-            }
-            currentSize--;
-        }
-    }
-
-    public void removeByElementAll(T element){
-        for(int i = 0; i < vector.length; i++){
-            if(findIndexByValue(element) != -1){
-                removeByIndex(findIndexByValue(element));}
-                currentSize--;
-            }
-    }
-
-    public void removeByElementAllOptmize(T element) throws Exception {
-        if(element == null) throw new NullPointerException();
-        T[] vectorTemp = (T[]) new Object[capacity];
-        int indexTemp = 0;
-        for(int i = 0; i < capacity; i++){
-            if(vector[i] != null && !vector[i].equals(element)){
-                vectorTemp[indexTemp] = vector[i];
-                indexTemp++;
+    //Bubble Sort
+    public void sort() throws Exception {
+        if(isEmpty() || currentSize < 2) throw new Exception("Element isn't found!"); ;
+        T aux = null;
+        for(int i = 0; i < currentSize - 1; i++){
+            for(int j = 0; j < currentSize - 1; j++){
+                if(vector[j].compareTo(vector[j+1]) > 0){
+                    aux = vector[j];
+                    vector[j] = vector[j+1];
+                    vector[j+1] = aux;
+                }
             }
         }
-        if(indexTemp > 0){
-            vector = vectorTemp;
-            currentSize = indexTemp;
-        }else{
-            throw new Exception("Element isn't found!");
-        }
     }
-    public void clearArray(){
-        vector = null;
-        currentSize = 0;
-        Runtime.getRuntime().runFinalization();
-        Runtime.getRuntime().gc();
-    }
-
-    public T[] toArray(){
-        T[] newArray = (T[]) new Object[currentSize];
-        for(int i = 0; i < currentSize; i++){
-            newArray[i] = vector[i];
-        }
-        return newArray;
-    }
-
-    public T[] sortArray(){
-
-    }
-
-
     @Override
     public String toString() {
 
@@ -154,8 +171,6 @@ public class Array<T> implements Comparable<T>{
         return sb.toString();
     }
 
-    @Override
-    public int compareTo(T o) {
-        return 0;
-    }
+
+
 }

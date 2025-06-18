@@ -1,8 +1,8 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
+
     public static void main(String[] args) throws Exception {
-        Array<Integer> teste = new Array<>(15);
+        Arrays<Integer> teste = new Arrays<>(Integer.class,15);
         teste.add(1);
         teste.add(2);
         teste.add(1);
@@ -15,10 +15,15 @@ public class Main {
         teste.add(1);
         teste.add(1);
         System.out.println(teste);
+        teste.sort();
+        System.out.println(teste);
         teste.addAtPosition(7,9);
         System.out.println(teste);
-        teste.removeByElementAll(1);
+        teste.sort();
         System.out.println(teste);
+        teste.removeByElementAllOptmize(1);
+        System.out.println(teste);
+
 
 
 
