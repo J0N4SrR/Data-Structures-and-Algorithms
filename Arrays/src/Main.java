@@ -15,11 +15,11 @@ public class Main {
         teste.add(1);
         teste.add(1);
         System.out.println(teste);
-        teste.sort();
+        teste.bubleSort();
         System.out.println(teste);
         teste.addAtPosition(7,9);
         System.out.println(teste);
-        teste.sort();
+        teste.bubleSort();
         System.out.println(teste);
         teste.removeByElementAllOptmize(1);
         System.out.println(teste);

@@ -139,19 +139,37 @@ public class Arrays<T extends Comparable<T>>  {
     }
 
     //Bubble Sort
-    public void sort() throws Exception {
-        if(isEmpty() || currentSize < 2) throw new Exception("Element isn't found!"); ;
-        T aux = null;
+    public void bubbleSort() throws Exception {
+        if(isEmpty() || currentSize < 2) return;
+
         for(int i = 0; i < currentSize - 1; i++){
-            for(int j = 0; j < currentSize - 1; j++){
+            for(int j = 0; j < currentSize - 1 - i; j++){
                 if(vector[j].compareTo(vector[j+1]) > 0){
-                    aux = vector[j];
+                    T temp = vector[j];
                     vector[j] = vector[j+1];
-                    vector[j+1] = aux;
+                    vector[j+1] = temp;
                 }
             }
         }
     }
+    //Selection Sort
+    public void selectionSort() throws Exception {
+        if(isEmpty() || currentSize < 2) return;
+        T valueTemp;
+        for(int i = 0; i < currentSize -1 ; i++){
+            int indexMin = i;
+            for(int j = i + 1; j < currentSize; j++){
+                if(vector[j].compareTo(vector[indexMin]) < 0){
+                    indexMin = j;
+                }
+            }
+            valueTemp = vector[indexMin];
+            vector[indexMin] = vector[i];
+            vector[i] = valueTemp;
+
+        }
+    }   
+
     @Override
     public String toString() {
 
