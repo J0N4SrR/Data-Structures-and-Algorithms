@@ -1,3 +1,4 @@
+import dsa.Arrays;
 
 public class Main {
 
@@ -15,11 +16,11 @@ public class Main {
         teste.add(1);
         teste.add(1);
         System.out.println(teste);
-        teste.bubleSort();
+
         System.out.println(teste);
         teste.addAtPosition(7,9);
         System.out.println(teste);
-        teste.bubleSort();
+
         System.out.println(teste);
         teste.removeByElementAllOptmize(1);
         System.out.println(teste);
